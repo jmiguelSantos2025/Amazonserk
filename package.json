@@ -1,0 +1,33 @@
+{
+  "name": "projeto_fsi_eraumavezamazonas",
+  "version": "1.0.0",
+  "description": "jogo estilo berserk feito com excalibur para obtenção de nota da disciplina de fsi da UEA",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmiguelSantos2025/EraUmaVezAmazonia.git"
+  },
+  "keywords": [
+    "jogo",
+    "berserk",
+    "eraUmaVezAmazonia"
+  ],
+  "author": "João Miguel e thiago",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmiguelSantos2025/EraUmaVezAmazonia/issues"
+  },
+  "homepage": "https://github.com/jmiguelSantos2025/EraUmaVezAmazonia#readme",
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  },
+  "dependencies": {
+    "excalibur": "0.32.0"
+  }
+}
