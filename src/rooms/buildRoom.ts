@@ -1,5 +1,5 @@
 import * as ex from "excalibur";
-import { Wall } from "../actors/Wall";
+import { Wall } from "../actors/wall";
 
 export function buildRoom(scene: ex.Scene, layout: string[]) {
   layout.forEach((line, row) => {
