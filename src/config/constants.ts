@@ -1,4 +1,3 @@
-
 import * as ex from "excalibur";
 
 export const GAME = {
