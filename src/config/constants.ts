@@ -20,3 +20,11 @@ export const BULLET = {
     speed: 400,
     cooldownMs: 250,
 } as const;
+
+
+export const ENEMY = {
+    size:48,
+    color: ex.Color.Yellow,
+    speed:120,
+
+}as const;
