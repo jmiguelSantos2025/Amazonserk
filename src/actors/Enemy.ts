@@ -1,8 +1,13 @@
 import * as ex from "excalibur";
 import { ENEMY } from "../config/constants";
+import { ENEMY_GROUP } from "../config/collisionGroups";
 import { Player } from "./Player";
+import { Wall } from "./wall";
 
 export class Enemy extends ex.Actor {
+    // o João pode preencher isso na #29 (perder vida do jogador)
+    public static onHitPlayer: (enemy: Enemy, player: Player) => void = () => {};
+
     public isDying = false;
 
     constructor(x: number, y: number) {
@@ -12,6 +17,21 @@ export class Enemy extends ex.Actor {
             height: ENEMY.size,
             color: ENEMY.color,
             collisionType: ex.CollisionType.Active,
+            collisionGroup: ENEMY_GROUP,
+        });
+    }
+
+    override onInitialize(): void {
+        this.on("collisionstart", (evt) => {
+            if (this.isDying) return;
+            const other = evt.other.owner;
+
+            if (other instanceof Wall) {
+                this.die();
+            } else if (other instanceof Player) {
+                Enemy.onHitPlayer(this, other);
+                this.die();
+            }
         });
     }
 
@@ -34,7 +54,7 @@ export class Enemy extends ex.Actor {
 
         // Para o movimento imediatamente
         this.vel = ex.Vector.Zero;
-        
+
         // Altera a cor para Vermelho
         this.color = ex.Color.Red;
 
