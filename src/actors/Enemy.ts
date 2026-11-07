@@ -3,12 +3,17 @@ import { ENEMY } from "../config/constants";
 import { ENEMY_GROUP } from "../config/collisionGroups";
 import { Player } from "./Player";
 import { Wall } from "./wall";
+import { EnemyBullet } from "./EnemyBullet";
+
+const SHOOT_COOLDOWN_MS = 1500;
+const ALIGN_TOLERANCE = 20; // quão perto da mesma linha/coluna conta como alinhado
 
 export class Enemy extends ex.Actor {
     // o João pode preencher isso na #29 (perder vida do jogador)
     public static onHitPlayer: (enemy: Enemy, player: Player) => void = () => {};
 
     public isDying = false;
+    private shootCooldown = 1000; // não atira assim que nasce
 
     constructor(x: number, y: number) {
         super({
@@ -38,6 +43,8 @@ export class Enemy extends ex.Actor {
     override onPreUpdate(engine: ex.Engine, elapsed: number): void {
         if (this.isDying) return;
 
+        this.shootCooldown -= elapsed;
+
         const player = engine.currentScene.actors.find(a => a instanceof Player);
 
         if (player) {
@@ -45,6 +52,28 @@ export class Enemy extends ex.Actor {
             if (direction.size > 0) {
                 this.vel = direction.normalize().scale(ENEMY.speed);
             }
+
+            this.tryShoot(engine, player);
+        }
+    }
+
+    private tryShoot(engine: ex.Engine, player: Player): void {
+        if (this.shootCooldown > 0) return;
+
+        const dx = player.pos.x - this.pos.x;
+        const dy = player.pos.y - this.pos.y;
+
+        let dir: ex.Vector | null = null;
+        if (Math.abs(dy) < ALIGN_TOLERANCE) {
+            dir = ex.vec(Math.sign(dx), 0); // mesma linha: atira na horizontal
+        } else if (Math.abs(dx) < ALIGN_TOLERANCE) {
+            dir = ex.vec(0, Math.sign(dy)); // mesma coluna: atira na vertical
+        }
+
+        if (dir) {
+            const start = this.pos.add(dir.scale(ENEMY.size / 2 + 8));
+            engine.currentScene.add(new EnemyBullet(start, dir));
+            this.shootCooldown = SHOOT_COOLDOWN_MS;
         }
     }
 
