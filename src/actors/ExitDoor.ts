@@ -5,8 +5,9 @@ import { Enemy } from "./Enemy";
 import { Player } from "./Player";
 
 export class ExitDoor extends ex.Actor {
+  public static onPlayerEnter: () => void = () => {};
   public isOpen = false;
-  public onPlayerEnter: () => void = () => {};
+  private triggered = false;
 
   constructor(x: number, y: number) {
     super({
@@ -19,26 +20,27 @@ export class ExitDoor extends ex.Actor {
     });
   }
 
-  override onInitialize(): void {
-    this.on("collisionstart", (evt) => {
-      if (this.isOpen && evt.other.owner instanceof Player) {
-        this.onPlayerEnter();
-      }
-    });
-  }
-
   override onPreUpdate(engine: ex.Engine): void {
-    if (this.isOpen) return;
+    const scene = engine.currentScene;
 
-    const hasEnemies = engine.currentScene.actors.some((a) => a instanceof Enemy);
-    if (!hasEnemies) {
-      this.open();
+    if (!this.isOpen) {
+      const hasEnemies = scene.actors.some((a) => a instanceof Enemy && !a.isDying);
+      if (!hasEnemies) this.open();
+      return;
+    }
+
+    if (this.triggered) return;
+
+    const player = scene.actors.find((a) => a instanceof Player);
+    if (player && player.pos.distance(this.pos) < TILE) {
+      this.triggered = true;
+      ExitDoor.onPlayerEnter();
     }
   }
 
   private open(): void {
     this.isOpen = true;
     this.color = ex.Color.Green;
-    this.body.collisionType = ex.CollisionType.Passive; // o jogador passa, mas ainda gera o evento
+    this.body.collisionType = ex.CollisionType.Passive;
   }
 }
