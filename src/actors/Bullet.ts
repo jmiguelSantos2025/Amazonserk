@@ -1,7 +1,7 @@
 import * as ex from "excalibur";
 import { BULLET, GAME } from "../config/constants";
-import { Enemy } from "./Enemy";
 import { PLAYER_BULLET_GROUP } from "../config/collisionGroups";
+import { Enemy } from "./Enemy";
 
 export class Bullet extends ex.Actor {
     constructor(position: ex.Vector, direction: ex.Vector) {
@@ -11,18 +11,20 @@ export class Bullet extends ex.Actor {
             height: BULLET.size,
             color: BULLET.color,
             vel: direction.scale(BULLET.speed),
-            collisionType: ex.CollisionType.Active, // Necessário para detectar colisões
+            collisionType: ex.CollisionType.Active,
             collisionGroup: PLAYER_BULLET_GROUP,
         });
     }
 
-    override onInitialize(engine: ex.Engine): void {
-        // Detecta quando a bala colide com outro ator
+    override onInitialize(): void {
         this.on("collisionstart", (evt) => {
-            if (evt.other instanceof Enemy) {
-                evt.other.die(); // Ativa a piscada e morte do inimigo
-                this.kill();      // Destrói a bala imediatamente
+            const other = evt.other.owner;
+
+            if (other instanceof Enemy) {
+                other.die();
             }
+
+            this.kill();
         });
     }
 
