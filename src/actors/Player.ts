@@ -1,7 +1,8 @@
 import * as ex from "excalibur";
 import { PLAYER, BULLET } from "../config/constants";
+import { PLAYER_GROUP } from "../config/collisionGroups";
 import { Bullet } from "./Bullet";
-import {PLAYER_GROUP} from "../config/collisionGroups"
+
 export class Player extends ex.Actor {
     facing: ex.Vector = ex.vec(1, 0);
     cooldown = 0;
@@ -13,7 +14,7 @@ export class Player extends ex.Actor {
             height: PLAYER.size,
             color: PLAYER.color,
             collisionType: ex.CollisionType.Active,
-            collisionGroup: PLAYER_GROUP, 
+            collisionGroup: PLAYER_GROUP,
         });
     }
 
