@@ -1,8 +1,8 @@
-
 import * as ex from "excalibur";
 import { Wall } from "../actors/wall";
 import { Enemy } from "../actors/Enemy";
 import { Player } from "../actors/Player";
+import { ExitDoor } from "../actors/ExitDoor";
 import { TILE } from "../config/room";
 
 export function buildRoom(scene: ex.Scene, layout: string[]): Player | null {
@@ -10,7 +10,6 @@ export function buildRoom(scene: ex.Scene, layout: string[]): Player | null {
 
   layout.forEach((line, row) => {
     [...line].forEach((char, col) => {
-     
       const x = col * TILE + TILE / 2;
       const y = row * TILE + TILE / 2;
 
@@ -18,6 +17,8 @@ export function buildRoom(scene: ex.Scene, layout: string[]): Player | null {
         scene.add(new Wall(col, row));
       } else if (char === "R") {
         scene.add(new Enemy(x, y));
+      } else if (char === "E") {
+        scene.add(new ExitDoor(x, y));
       } else if (char === "P") {
         player = new Player(x, y);
         scene.add(player);
