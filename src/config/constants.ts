@@ -38,3 +38,10 @@ export const HUD = {
     lineHeight: 26,
     fontSize: 20,
 } as const;
+
+export const GAME_OVER = {
+    titleSize: 48,
+    scoreSize: 28,
+    hintSize: 22,
+    lineGap: 60,
+} as const;
