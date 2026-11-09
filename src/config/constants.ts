@@ -10,7 +10,7 @@ export const GAME = {
 export const PLAYER = {
     size:24,
     color: ex.Color.Green,
-    speed: 230,
+    speed: 180,
 
 }as const;
 
@@ -25,7 +25,7 @@ export const BULLET = {
 export const ENEMY = {
     size:48,
     color: ex.Color.Yellow,
-    speed:70,
+    speed: 120,
 
 }as const;
 

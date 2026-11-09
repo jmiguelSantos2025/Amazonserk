@@ -2,18 +2,17 @@ import * as ex from "excalibur";
 import { ENEMY } from "../config/constants";
 import { ENEMY_GROUP } from "../config/collisionGroups";
 import { Player } from "./Player";
-import { Wall } from "./wall";
 import { EnemyBullet } from "./EnemyBullet";
 
-const SHOOT_COOLDOWN_MS = 1500;
-const ALIGN_TOLERANCE = 20; // quão perto da mesma linha/coluna conta como alinhado
+const SHOOT_COOLDOWN_MS = 3000;
+const ALIGN_TOLERANCE = 10; // quão perto da mesma linha/coluna conta como alinhado
 
 export class Enemy extends ex.Actor {
-    // o João pode preencher isso na #29 (perder vida do jogador)
+    // o João liga isso na #29 (perder vida do jogador)
     public static onHitPlayer: (enemy: Enemy, player: Player) => void = () => {};
 
     public isDying = false;
-    private shootCooldown = 1000; // não atira assim que nasce
+    private shootCooldown = 2500; // não atira assim que nasce
 
     constructor(x: number, y: number) {
         super({
@@ -31,9 +30,7 @@ export class Enemy extends ex.Actor {
             if (this.isDying) return;
             const other = evt.other.owner;
 
-            if (other instanceof Wall) {
-                this.die();
-            } else if (other instanceof Player) {
+            if (other instanceof Player) {
                 Enemy.onHitPlayer(this, other);
                 this.die();
             }
