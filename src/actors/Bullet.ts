@@ -1,6 +1,7 @@
 import * as ex from "excalibur";
 import { BULLET, GAME } from "../config/constants";
 import { PLAYER_BULLET_GROUP } from "../config/collisionGroups";
+import { registerEnemyKill } from "../state/gameState";
 import { Enemy } from "./Enemy";
 
 export class Bullet extends ex.Actor {
@@ -20,8 +21,10 @@ export class Bullet extends ex.Actor {
         this.on("collisionstart", (evt) => {
             const other = evt.other.owner;
 
-            if (other instanceof Enemy) {
+            // Só pontua na primeira vez que o robô é atingido.
+            if (other instanceof Enemy && !other.isDying) {
                 other.die();
+                registerEnemyKill();
             }
 
             this.kill();
