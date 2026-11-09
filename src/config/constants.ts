@@ -28,3 +28,6 @@ export const ENEMY = {
     speed:120,
 
 }as const;
+
+// Reexporta as regras puras para manter constants.ts como fonte oficial.
+export { GAME_RULES } from "./gameStateRules";
