@@ -1,5 +1,5 @@
 import * as ex from "excalibur";
-import { GAME, GAME_RULES } from "./config/constants";
+import { GAME, GAME_OVER, GAME_RULES } from "./config/constants";
 import { buildRoom } from "./rooms/buildRoom";
 import { layouts } from "./rooms/layout";
 import { ExitDoor } from "./actors/ExitDoor";
@@ -60,9 +60,9 @@ function showGameOver() {
     scene.add(
         new ex.Label({
             text: "GAME OVER",
-            pos: ex.vec(centerX, centerY - 60),
+            pos: ex.vec(centerX, centerY - GAME_OVER.lineGap),
             font: new ex.Font({
-                size: 48,
+                size: GAME_OVER.titleSize,
                 color: ex.Color.Red,
                 textAlign: ex.TextAlign.Center,
             }),
@@ -75,7 +75,7 @@ function showGameOver() {
             text: `Pontuação final: ${getScore()}`,
             pos: ex.vec(centerX, centerY),
             font: new ex.Font({
-                size: 28,
+                size: GAME_OVER.scoreSize,
                 color: ex.Color.White,
                 textAlign: ex.TextAlign.Center,
             }),
@@ -86,9 +86,9 @@ function showGameOver() {
     scene.add(
         new ex.Label({
             text: "Pressione ENTER para jogar de novo",
-            pos: ex.vec(centerX, centerY + 60),
+            pos: ex.vec(centerX, centerY + GAME_OVER.lineGap),
             font: new ex.Font({
-                size: 22,
+                size: GAME_OVER.hintSize,
                 color: ex.Color.White,
                 textAlign: ex.TextAlign.Center,
             }),
