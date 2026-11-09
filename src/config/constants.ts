@@ -31,3 +31,10 @@ export const ENEMY = {
 
 // Reexporta as regras puras para manter constants.ts como fonte oficial.
 export { GAME_RULES } from "./gameStateRules";
+
+export const HUD = {
+    x: 10,
+    y: 8,
+    lineHeight: 26,
+    fontSize: 20,
+} as const;
