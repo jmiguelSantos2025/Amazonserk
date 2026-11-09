@@ -28,3 +28,20 @@ export const ENEMY = {
     speed:120,
 
 }as const;
+
+// Reexporta as regras puras para manter constants.ts como fonte oficial.
+export { GAME_RULES } from "./gameStateRules";
+
+export const HUD = {
+    x: 10,
+    y: 8,
+    lineHeight: 26,
+    fontSize: 20,
+} as const;
+
+export const GAME_OVER = {
+    titleSize: 48,
+    scoreSize: 28,
+    hintSize: 22,
+    lineGap: 60,
+} as const;
