@@ -3,6 +3,7 @@ import { GAME } from "./config/constants";
 import { buildRoom } from "./rooms/buildRoom";
 import { layouts } from "./rooms/layout";
 import { ExitDoor } from "./actors/ExitDoor";
+import { createHud, updateHud, type Hud } from "./ui/Hud";
 
 const game = new ex.Engine({
     width: GAME.width,
@@ -12,16 +13,19 @@ const game = new ex.Engine({
 
 let currentRoom = 0;
 let goNext = false;
+let hud: Hud | null = null;
 
 function loadRoom(index: number) {
     const scene = game.currentScene;
     scene.clear();
     buildRoom(scene, layouts[index]);
+    hud = createHud(scene);
 }
 
 function showVictory() {
     const scene = game.currentScene;
     scene.clear();
+    hud = null;
     scene.add(
         new ex.Label({
             text: "VOCÊ VENCEU!",
@@ -41,6 +45,10 @@ ExitDoor.onPlayerEnter = () => {
 };
 
 game.on("postupdate", () => {
+    if (hud) {
+        updateHud(hud);
+    }
+
     if (!goNext) return;
     goNext = false;
     currentRoom++;
